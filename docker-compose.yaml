@@ -1,0 +1,13 @@
+version: '3.7'
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: mydbwordpress.coeenv36tsf4.us-east-1.rds.amazonaws.com
+      WORDPRESS_DB_USER: admin
+      WORDPRESS_DB_PASSWORD: 07172402
+      WORDPRESS_DB_NAME: mydbwordpress
+    volumes:
+      - /mnt/efs/wordpress:/var/www/html
