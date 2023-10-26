@@ -5,7 +5,7 @@ systemctl start docker
 systemctl enable docker
 curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 chmod +x /usr/local/bin/docker-compose
-curl -sL "" --output "/home/ec2-user/docker-compose.yaml"
+curl -sL "https://raw.githubusercontent.com/Eliton-jpg/Atividade-Docker-Compasso/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml"
 yum install nfs-utils -y
 mkdir /mnt/efs/
 chmod +rwx /mnt/efs/
