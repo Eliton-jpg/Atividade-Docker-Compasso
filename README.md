@@ -132,7 +132,7 @@ chmod +x /usr/local/bin/docker-compose
 # curl no arquivo .yaml do meu git-hub e criar um arquivoc om  mesmo nome e conteúdo
 curl -sL "https://raw.githubusercontent.com/Elias-Dias-De-Araujo/pratica_docker_compass_uol/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml" 
 yum install nfs-utils 
-mkdir /mnt/efs/
+sudo mkdir -p /mnt/efs/
 # permissões ao diretório leitura, escrita e execução 
 chmod +rwx /mnt/efs/
 # sistema de arquivos com o EFS
