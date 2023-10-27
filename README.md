@@ -11,24 +11,24 @@ A atividade consiste em:
 
 Configurações da Infraestrutura
 
-## VPC (Virtual Private Cloud)
+## Virtual Private Cloud (VPC)
 
 A VPC esta dividida entre duas tabelas de rotas, em que uma é para as subnets privadas e a outra para as subnets públicas, temos duas subnets privadas e públicas, a criação das subnets privadas são para os containers docker com o wordpress, para que seja disponibilizado em um endereço ip privado. As subnets públicas são para permitir que o load balancer consiga conectar-se a internet a partir das duas AZs distintas que elas estão localizadas, para aumentar a disponibilidade, a rout table pública possuí um internet gateway para acessar a internet e a rout table privada possuí um NAT gateway para permitir o tráfego apenas de saída das subnets públicas.
 
-<img src = "img/vpc.PNG">
+
 
 ## Security Group (Gurpos de Seguraça)
 
 Para essa atividade foram criados dois grupos de segurança:
 
-Security Group para EC2, EFS, Load Balancer:
+Security Group para EC2, Load Balancer:
 
 |Tipo|Protocolo|Porta|Origem|
 |----------|-----|-----|----|
 |SSH|TCP|22|0.0.0.0/0|
 |HTTP|TCP|80|0.0.0.0/0|
 |HTTPS|TCP|443|0.0.0.0/0|
-|NFS|TCP|2049|0.0.0.0/0|
+
 
 Security Group para RDS:
 
@@ -37,7 +37,13 @@ Security Group para RDS:
 |MYSQL/Aurora|TCP|3306|SG_EC2|
 |MYSQL/Aurora|TCP|3306|MEU_IP|
 
-## Autoscaling
+Security Group para EFS:
+
+|Tipo|Protocolo|Porta|Origem|
+|----------|-----|-----|----|
+|NFS|TCP|2049|0.0.0.0/0|
+
+## Autoscaling (escalonamento automático)
 
 Para a configuração do autoscaling, foi criado o launcher template que utiliza o user_data.sh.
 
@@ -49,7 +55,7 @@ A configuração do autoscaling segue essas etapas:
  * Em balanceador de carga, pode-se selecionar o já criado, ou criar posteriormente;
  * Selecionar a capacidade desejada, mínima e máxima como 2(que foi requerido na atividade);
   
-### Launcher Templete
+### Launcher Templete(Templete de execução)
 
 Para o modelo de execução, foi escolhida uma máquina igual a atividade anterior:
  * Amzon Linux 2;
@@ -58,7 +64,7 @@ Para o modelo de execução, foi escolhida uma máquina igual a atividade anteri
  * Tags de criação;
  * User_data.sh 
 
-## Load Balancer
+## Load Balancer (Balanceador de Carga)
 
 A criação do load balancer, segue as seguintes etapas: 
  * Ir para a seção de load balancers na AWS, criar lod balancer;
@@ -68,7 +74,7 @@ A criação do load balancer, segue as seguintes etapas:
  * Associar um grupo de segurança com o LoadBalancer;
  * Nos listerners e roteamento, selecionar o target group criado;
 
-### TARGET GROUP
+### TARGET GROUP(Gurpo de Destino)
 
 Para configurar o target group, devesse seguir as seguintes etapas: 
  * Ir para a seção de grupos de destino na AWS, criar grupo de destino;
@@ -78,7 +84,7 @@ Para configurar o target group, devesse seguir as seguintes etapas:
  * Escolher o caminho para verificação de integridade que serão  "/" e "HTTP";
  * Depois basta registrar as instâncias;
 
-## RDS
+## Relational Database Service (RDS)
 
 O RDS foi configurado seguindo as etapas:
  * Ir para a seção e RDS e Criar banco de dados;
@@ -99,34 +105,18 @@ O RDS foi configurado seguindo as etapas:
 
 
 
-## EFS
+## Elastic File System (EFS)
 
 Para criar o Elastic File System, basta:
 
- - Ir para a seção e EFS na AWS;
- - Clicar em "Criar sistema de arquivos";
- - Digitar o nome para o EFS ;
- - Selecionar  VPC que ele ficará;
+ * Ir para a seção e EFS na AWS;
+ * Clicar em "Criar sistema de arquivos";
+ * Digitar o nome para o EFS ;
+ * Selecionar  VPC que ele ficará;
 
 # SCRIPT E ARQUIVO DE IMAGEM .YAML
 
  Foi criado um arquivo .yaml no meu github pessoal e depois chamo esse arquivo no user_data.sh que ficará no laucher templete de cada uma das máquinas que será iniciada no autoscaling group.
-
-```yaml
-version: '3.7'
-services:
-  wordpress:
-    image: wordpress
-    ports:
-      - "80:80"
-    environment:
-      WORDPRESS_DB_HOST: ENDPOIT_RDS
-      WORDPRESS_DB_USER: USER_RDS
-      WORDPRESS_DB_PASSWORD: SENHA_RDS
-      WORDPRESS_DB_NAME: NAME_RDS
-    volumes:
-      - /mnt/efs/wordpress:/var/www/html
-```
 
 user_data.sh:
 
@@ -153,3 +143,21 @@ usermod -aG docker ${USER}
 chmod 666 /var/run/docker.sock
 docker-compose -f /home/ec2-user/docker-compose.yaml up -d
 ```
+
+```yaml
+version: '3.7'
+services:
+  wordpress:
+    image: wordpress
+    ports:
+      - "80:80"
+    environment:
+      WORDPRESS_DB_HOST: ENDPOIT_RDS
+      WORDPRESS_DB_USER: USER_RDS
+      WORDPRESS_DB_PASSWORD: SENHA_RDS
+      WORDPRESS_DB_NAME: NAME_RDS
+    volumes:
+      - /mnt/efs/wordpress:/var/www/html
+```
+
+
