@@ -1,10 +1,11 @@
 # PRÁTICA DOCKER
 
 A atividade consiste em:
-* instalação e configuração do DOCKER ou CONTAINERD no host EC2; Ponto adicional para o trabalho utilizar a instalação via script de Start Instance (user_data.sh) 
-* Efetuar Deploy de uma aplicação Wordpress com: container de aplicação RDS database Mysql 
-* Configuração da utilização do serviço EFS AWS para estáticos do container de aplicação Wordpress 
-* Configuração do serviço de Load Balancer AWS para a aplicação Wordpress
+ 1. instalação e configuração do DOCKER ou CONTAINERD no host EC2; Ponto adicional para o trabalho utilizar a instalação via script de Start Instance (user_data.sh);
+ 2. Efetuar Deploy de uma aplicação Wordpress com: container de aplicação RDS database Mysql;
+ 3. Configuração da utilização do serviço EFS AWS para estáticos do container de aplicação Wordpress;
+ 4. Configuração do serviço de Load Balancer AWS para a aplicação Wordpress;
+   
 
 
 # AWS Configurações
@@ -48,60 +49,60 @@ Security Group para EFS:
 Para a configuração do autoscaling, foi criado o launcher template que utiliza o user_data.sh.
 
 A configuração do autoscaling segue essas etapas:
- * Ir para a seção de "Grupos do Auto Scaling e "criar grupo do Auto Scaling";
- * Selecionar o launcher template criado;
- * Escolher a VPC;
- * Selecionar as subnets privadas;
- * Em balanceador de carga, pode-se selecionar o já criado, ou criar posteriormente;
- * Selecionar a capacidade desejada, mínima e máxima como 2(que foi requerido na atividade);
+ 1. Ir para a seção de "Grupos do Auto Scaling e "criar grupo do Auto Scaling";
+ 2. Selecionar o launcher template criado;
+ 3. Escolher a VPC;
+ 4. Selecionar as subnets privadas;
+ 5. Em balanceador de carga, pode-se selecionar o já criado, ou criar posteriormente;
+ 6. Selecionar a capacidade desejada, mínima e máxima como 2(que foi requerido na atividade);
   
 ### Launcher Templete(Templete de execução)
 
 Para o modelo de execução, foi escolhida uma máquina igual a atividade anterior:
- * Amzon Linux 2;
- * t3 small;
- * 16 Gb de volume;
- * Tags de criação;
- * User_data.sh 
+ 1. Amzon Linux 2;
+ 2. t3 small;
+ 3. 16 Gb de volume;
+ 4. Tags de criação;
+ 5. User_data.sh 
 
 ## Load Balancer (Balanceador de Carga)
 
 A criação do load balancer, segue as seguintes etapas: 
- * Ir para a seção de load balancers na AWS, criar lod balancer;
- * Tipo de "Application Load Balancer";
- * Esquema de "Internet-Facing", tipo de IP como "IPv4";
- * Mapear as subnets públicas de cada AZ;
- * Associar um grupo de segurança com o LoadBalancer;
- * Nos listerners e roteamento, selecionar o target group criado;
+ 1. Ir para a seção de load balancers na AWS, criar lod balancer;
+ 2. Tipo de "Application Load Balancer";
+ 3. Esquema de "Internet-Facing", tipo de IP como "IPv4";
+ 4. Mapear as subnets públicas de cada AZ;
+ 5. Associar um grupo de segurança com o LoadBalancer;
+ 6. Nos listerners e roteamento, selecionar o target group criado;
 
 ### TARGET GROUP(Gurpo de Destino)
 
 Para configurar o target group, devesse seguir as seguintes etapas: 
- * Ir para a seção de grupos de destino na AWS, criar grupo de destino;
- * Na configuração básica selecionar instâncias;
- * Selecionar o protocolo e a porta "HTTP" e "80" "respectivamente, tipo de endereçamento IP será o "IPv4";
- * Associar a VPC que estarão as instâncias EC2;
- * Escolher o caminho para verificação de integridade que serão  "/" e "HTTP";
- * Depois basta registrar as instâncias;
+ 1. Ir para a seção de grupos de destino na AWS, criar grupo de destino;
+ 2. Na configuração básica selecionar instâncias;
+ 3. Selecionar o protocolo e a porta "HTTP" e "80" "respectivamente, tipo de endereçamento IP será o "IPv4";
+ 4. Associar a VPC que estarão as instâncias EC2;
+ 5. Escolher o caminho para verificação de integridade que serão  "/" e "HTTP";
+ 6. Depois basta registrar as instâncias;
 
 ## Relational Database Service (RDS)
 
 O RDS foi configurado seguindo as etapas:
- * Ir para a seção e RDS e Criar banco de dados;
- * Selecionar Método de criação padrão juntamente com MySQL;
- * Selecionar o free tier;
- * Inserir o nome de indentificador da instância;
- * Configurar nome e senha do usuário;
- * Configuração de instância foi "db.t3.micro";
- * Armazenamento gp2;
- * Conectividade opção "não se conectar a um recurso de computação do EC2";
- * IPv4;
- * Selecionar a VPC da atividade;
- * Criar security group para o RDS;
- * Zona de disponibilidade como "Sem preferência";
- * Atuoridade de certificação como padrão;
- * Autenticação com senha;
- * Ir em configurações adicionais e colocar o nome do RDS(não confudir com identificador da instância);
+ 1. Ir para a seção e RDS e Criar banco de dados;
+ 2. Selecionar Método de criação padrão juntamente com MySQL;
+ 3. Selecionar o free tier;
+ 4. Inserir o nome de indentificador da instância;
+ 5. Configurar nome e senha do usuário;
+ 6. Configuração de instância foi "db.t3.micro";
+ 7. Armazenamento gp2;
+ 8. Conectividade opção "não se conectar a um recurso de computação do EC2";
+ 9. IPv4;
+ 10. Selecionar a VPC da atividade;
+ 11. Criar security group para o RDS;
+ 12. Zona de disponibilidade como "Sem preferência";
+ 13. Atuoridade de certificação como padrão;
+ 14. Autenticação com senha;
+ 15. Ir em configurações adicionais e colocar o nome do RDS(não confudir com identificador da instância);
 
 
 
@@ -109,38 +110,39 @@ O RDS foi configurado seguindo as etapas:
 
 Para criar o Elastic File System, basta:
 
- * Ir para a seção e EFS na AWS;
- * Clicar em "Criar sistema de arquivos";
- * Digitar o nome para o EFS ;
- * Selecionar  VPC que ele ficará;
+ 1. Ir para a seção e EFS na AWS;
+ 2. Clicar em "Criar sistema de arquivos";
+ 3. Digitar o nome para o EFS ;
+ 4. Selecionar  VPC que ele ficará;
 
 # SCRIPT E ARQUIVO DE IMAGEM .YAML
 
  Foi criado um arquivo .yaml no meu github pessoal e depois chamo esse arquivo no user_data.sh que ficará no laucher templete de cada uma das máquinas que será iniciada no autoscaling group.
 
-user_data.sh:
+user_data.sh:(tive problemas com o script e tive que colocar sudo na frente de cada comando para executar)
 
 ```sh
 #!/bin/bash
-yum update -y
-yum install docker -y
-systemctl start docker
-systemctl enable docker
-curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+sudo yum update -y
+sudo yum install docker -y
+sudo systemctl start docker
+sudo systemctl enable docker
+sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 # Dar permissões de execução 
-chmod +x /usr/local/bin/docker-compose
+sudo chmod +x /usr/local/bin/docker-compose
 # curl no arquivo .yaml do meu git-hub e criar um arquivoc om  mesmo nome e conteúdo
-curl -sL "https://raw.githubusercontent.com/Elias-Dias-De-Araujo/pratica_docker_compass_uol/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml" 
-yum install nfs-utils 
-sudo mkdir -p /mnt/efs/
+sudo curl -sL "https://raw.githubusercontent.com/Elias-Dias-De-Araujo/pratica_docker_compass_uol/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml" 
+
+# Instalação e configuração do EFS 
+sudo yum install amazon-efs-utils -y
+sudo systemctl enable nfs-utils.service
+sudo systemctl start nfs-utils.service
 # permissões ao diretório leitura, escrita e execução 
-chmod +rwx /mnt/efs/
+sudo chmod +rwx /mnt/efs/
 # sistema de arquivos com o EFS
-mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07c68e847f4ea9744.efs.us-east-1.amazonaws.com:/ /mnt/efs/
+sudo mount -t nfs4 -o nfsvers=4.1,rsize=1048576,wsize=1048576,hard,timeo=600,retrans=2,noresvport fs-07c68e847f4ea9744.efs.us-east-1.amazonaws.com:/ /mnt/efs/
 echo "fs-07c68e847f4ea9744.efs.us-east-1.amazonaws.com:/ /mnt/efs nfs defaults 0 0" >> /etc/fstab
-# Adicionar o usuário atual no grupo do docker
-usermod -aG docker ${USER}
-chmod 666 /var/run/docker.sock
+# Execução do docker-compose
 docker-compose -f /home/ec2-user/docker-compose.yaml up -d
 ```
 
