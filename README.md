@@ -131,7 +131,7 @@ sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-
 # Dar permissões de execução 
 sudo chmod +x /usr/local/bin/docker-compose
 # curl no arquivo .yaml do meu git-hub e criar um arquivoc om  mesmo nome e conteúdo
-sudo curl -sL "https://raw.githubusercontent.com/Elias-Dias-De-Araujo/pratica_docker_compass_uol/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml" 
+sudo curl -sL "https://raw.githubusercontent.com/Eliton-jpg/Atividade-Docker-Compasso/main/docker-compose.yaml" --output "/home/ec2-user/docker-compose.yaml" 
 
 # Instalação e configuração do EFS 
 sudo yum install amazon-efs-utils -y
